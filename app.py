@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_from_directory
 import os
 import json
-import random
 import base64
 import requests
 from PIL import Image
@@ -10,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Load API key from environment variable
-api_key = os.getenv("SG_0094b5ff7fd0e3a9")
+api_key = os.getenv("SEGMIND_API_KEY")
 url = "https://api.segmind.com/v1/try-on-diffusion"
 
 # Upload folder setup
@@ -34,15 +33,17 @@ def login():
 def home():
     return render_template('home.html')
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    email = request.form['email']
-    password = request.form['password']
-    data['login'][email] = password
-    with open('data.json', 'w') as f:
-        json.dump(data, f)
-    session['user'] = email
-    return redirect(url_for('home'))
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        data['login'][email] = password
+        with open('data.json', 'w') as f:
+            json.dump(data, f)
+        session['user'] = email
+        return redirect(url_for('home'))
+    return render_template('register.html')  # Serve registration page for GET requests
 
 @app.route('/try_on', methods=['POST'])
 def try_on():
