@@ -35,15 +35,27 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    if request.method == 'POST':  # Handle POST requests only
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm-password')
+
+        if not email or not password or not confirm_password:
+            return "All fields are required", 400
+
+        if password != confirm_password:
+            return "Passwords do not match", 400
+
+        # Save user credentials
         data['login'][email] = password
         with open('data.json', 'w') as f:
-            json.dump(data, f)
-        session['user'] = email
+            json.dump(data, f, indent=4)
+
+        session['user'] = email  # Log in the user after registration
         return redirect(url_for('home'))
-    return render_template('register.html')  # Serve registration page for GET requests
+
+    return render_template('register.html')  # Show registration form for GET requests
+
 
 @app.route('/try_on', methods=['POST'])
 def try_on():
