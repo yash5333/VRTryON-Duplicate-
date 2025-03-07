@@ -1,0 +1,20 @@
+{
+  "someshrocks144@gmail.com127.0.0.1": [
+    {
+      "name": "Delicate Lace Trim Grey Camisole",
+      "brand": "FurStyle",
+      "price": "5299",
+      "img": "./static/assets/women/jackets/09933_00.jpg",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "rating": "4.9",
+      "reviews": "25",
+      "category": "jackets",
+      "index": 4
+    }
+  ]
+}
